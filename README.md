@@ -11,6 +11,7 @@ Join the [VORP Community Discord](https://discord.gg/23MPbQ6)
 4. Location based crafting
 5. Campfire based crafting
 6. Use campfire from inventory
+    - `/dcampfire` will despawn the fire after an animation
 
 ## Screenshots
 ![image](https://user-images.githubusercontent.com/10902965/172117617-d736a536-d7b2-4bc9-acf8-afbbbe14a5da.png)
