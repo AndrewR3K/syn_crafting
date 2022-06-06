@@ -1,528 +1,699 @@
 Config = {}
 
+-- distance to interact with Location
+Config.interactiondist = 2.5
 
-Config.interactiondist = 2.5 -- distance to interact with location
-
-Config.locations = { -- list of all crafting locations
-    ["location1"] = {x = -1136.9,y = 270.47,z =42.9},
-    ["location2"] = {x = 0,y = 0,z =0},
+-- Craftable Locations
+Config.locations = {
+    --["Location1"] = {x = 499.64,y = 677.99,z =117.45},
+   -- ["Location2"] = {x = 2266.73,y = -767.57,z =42.32},
 }
 
-Config.craftingprops = {"p_campfire02x","p_campfirecombined02x","p_campfirecombined03x","p_kettle03x","p_campfirecombined04x"}
+Config.keys = {
+    G = 0x760A9C6F
+}
+
+Config.commands = {
+    campfire = true
+}
+
+Config.PlaceableCampfire = "p_campfire05x"
+
+-- Props the user can use to craft with
+Config.craftingProps = {"P_CAMPFIRECOMBINED01X","p_campfirefresh01x","p_fireplacelogs01x","p_woodstove01x","p_stove04x","p_campfire04x","p_campfire05x","p_campfire02x","p_campfirecombined02x","p_campfirecombined03x","p_kettle03x","p_campfirecombined04x", "P_CAMPFIRECOOK02X","P_CAMPFIRE_WIN2_01X","P_CRAFTINGPOT01X"}
+
+-- How long the progressbar will show when crafting
+Config.CraftTime = 15000
+
+-- Craftable item categories. ident and Config.crafting.Category must equal eachother.
+Config.categories = {
+    {
+        ident = 'food', 
+        text = 'Craft Food'
+    },
+    {
+        ident = 'items',
+        text = 'Craft Item'
+    }
+}
 
 Config.crafting = {
-    [1] = {
-        ['Text'] = "Boiled Egg  - 1xEgg, 1xWater",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "eggs",
-            ['Item2'] = "water",
-            ['Item3'] = "",
-            ['Count'] = 1,
-            ['Count2'] = 1,
-            ['Count3'] = 0,
-            ['Reward'] ={{ name = "boiledegg", count = 1}},
-            ['Job'] = {"cook"}, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = {"location1"}, -- keep 0 to allow crafting from any marked location
-
-        }
+    {
+        Text = "Meat Bfast ", -- name of item to craft on list
+        SubText = "InvMax = 10",
+        Desc = "Recipe: 1x Meat, 1x Salt",
+        Items = {
+            {
+                name = "meat",
+                count = 1
+            },
+            {
+                name = "salt",
+                count = 1
+            }
+        },
+        Reward = {
+            {
+                name = "consumable_breakfast",
+                count = 1
+            }
+        },
+        Job = 0, 
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "food"
+    },
+    {
+        Text = "Seasoned Small Game ",
+        SubText = "InvMax = 10",
+        Desc = "Recipe: 1 x SGM, 1 x Salt",
+        Items = {
+            {
+                name = "consumable_game",
+                count = 1
+            },
+            {
+                name = "salt",
+                count = 1
+            }
+        },
+        Reward ={
+            {
+                name = "cookedsmallgame",
+                count = 2
+            }
+        },
+        Job = 0, -- the job required
+        Location = 0, -- keep 0 to allow crafting from any marked Location
+        Category = "food"
     }, 
-     [2] = {
-        ['Text'] = "Dried Salmon  - 1xSockeye Salmon, 1xSalt", -- name of item to craft on list
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "a_c_fishsalmonsockeye_01_ms", 
-            ['Item2'] = "salt", 
-            ['Item3'] = "",
-            ['Count'] = 1, 
-            ['Count2'] = 1, 
-            ['Count3'] = 0,
-            ['Reward'] ={{ name = "consumable_salmon", count = 1}},
-            ['Job'] = 0, 
-            ['prop'] = {"p_campfire02x","p_campfirecombined02x","p_campfirecombined03x","p_kettle03x"}, -- will only show in those 2 props 
-            ['location'] = {"location1","location2"}, -- this item can only be crafted in location 1 and 2 
+    {
+        Text = "Apple Pie ", -- name of item to craft on list
+        SubText = "InvMax = 10",
+        Desc = "Recipe: 1x Apple, 1x Water, 1x Sugar, 1x Egg, 1x Flour",
+        Items = {
+            {
+                name = "apple",
+                count = 1
+            },
+            {
+                name = "water",
+                count = 1
+            },
+            {
+                name = "sugar",
+                count = 1
+            },
+            {
+                name = "flour",
+                count = 1
+            },
+            {
+                name = "eggs",
+                count = 1
+            }
+        },
+        Reward = {
+            {
+                name = "consumable_applepie",
+                count = 1
+            }
+        },
+        Job = 0,
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "food"
 
-        }
     },
-    [3] = {
-        ['Text'] = "Cooked Bluegil with Veggies - 1xSmall Bluegil, 1xCarrot and 1xCorn",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "a_c_fishbluegil_01_sm",
-            ['Item2'] = "carrots",
-            ['Item3'] = "consumable_corn",
-            ['Count'] = 1,
-            ['Count2'] = 1,
-            ['Count3'] = 1,
-            ['Reward'] ={{ name = "cookedbluegil", count = 1}},
-            ['Job'] = 0, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
+    {
+        Text = "Steak ", -- name of item to craft on list
+        SubText = "InvMax = 10",
+        Desc = "Recipe: 1x Meat",
+        Items = {
+            {
+                name = "meat",
+                count = 1
+            }
+        },
+        Reward = {
+            {
+                name = "steak",
+                count = 1
+            }
+        },
+        Job = 0, 
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "food"
     },
-    [4] = {
-        ['Text'] = "ChocolateBar - 2xCocoa and 3xSugar",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "cocoa",
-            ['Item2'] = "sugar",
-            ['Item3'] = "",
-            ['Count'] = 2,
-            ['Count2'] = 3,
-            ['Count3'] = 0,
-            ['Reward'] ={{ name = "consumable_chocolate_bar", count = 1}},
-            ['Job'] = 0, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
+    {
+        Text = "Breakfast ", -- name of item to craft on list
+        SubText = "InvMax = 5",
+        Desc = "Recipe: 1x Pork, 2x Eggs",
+        Items = {
+            {
+                name = "Pork",
+                count = 1
+            },
+            {
+                name = "eggs",
+                count = 2
+            }
+        }, 
+        Reward = {
+            {
+                name = "consumable_breakfast",
+                count = 1
+            }
+        },
+        Job = 0, 
+        
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "food"
     },
-    [5] = {
-        ['Text'] = "Fruit Salad - 2xBlack Berry, 1xBlack Currant and 1xCreekplum",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "Black_Berry",
-            ['Item2'] = "Black_Currant",
-            ['Item3'] = "Creekplum",
-            ['Count'] = 2,
-            ['Count2'] = 1,
-            ['Count3'] = 1,
-            ['Reward'] ={{ name = "consumable_fruitsalad", count = 1}},
-            ['Job'] = 0, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        } 
+    {
+        Text = "Blueberry Pie ", -- name of item to craft on list
+        SubText = "InvMax = 10",
+        Desc = "Recipe: 6x BlueBerry, 1 x Water, 1x Sugar, 1x Egg, 1x Flour",
+        Items = {
+            {
+                name = "blueberry",
+                count = 6
+            },
+            {
+                name = "water",
+                count = 1
+            },
+            {
+                name = "sugar",
+                count = 1
+            },
+            {
+                name = "eggs",
+                count = 1
+            },
+            {
+                name = "flour",
+                count = 1
+            }
+        }, 
+        Reward = {
+            {
+                name = "consumable_blueberrypie",
+                count = 1
+            }
+        },
+        Job = 0, 
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "food"
     },
-    [6] = {
-        ['Text'] = "Jerkied Meat - 2xMeat and 2xSalt",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "meat",
-            ['Item2'] = "salt",
-            ['Item3'] = "",
-            ['Count'] = 2,
-            ['Count2'] = 2,
-            ['Count3'] = 0,
-            ['Reward'] ={{ name = "beefjerky", count = 1}},
-            ['Job'] = 0, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
+    {
+        Text = "Seasoned Porkchop", -- name of item to craft on list
+        SubText = "InvMax = 10 ",
+        Desc = "Recipe: 1x Pork, 1x Salt",
+        Items = {
+            {
+                name = "Pork",
+                count = 1
+            },
+            {
+                name = "salt",
+                count = 1
+            }
+        },
+        Reward ={
+            {
+                name = "saltedcookedpork",
+                count = 1
+            }
+        },
+        Job = 0,
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "food"
     },
-    [7] = {
-        ['Text'] = "Dried Bluegil - 2xSalt, 1xMedium Bluegil",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "salt",
-            ['Item2'] = "meat",
-            ['Item3'] = "",
-            ['Count'] = 2,
-            ['Count2'] = 1,
-            ['Count3'] = 0,
-            ['Reward'] ={{ name = "consumable_bluegil", count = 1}},
-            ['Job'] = 0, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
+    {
+        Text = "Seasoned Big Game", -- name of item to craft on list
+        SubText = "InvMax = 10",
+        Desc = "Recipe 1x Big Game Meat, 1x Salt",
+        Items = {
+            {
+                name = "BigGameMeat",
+                count = 1
+            },
+            {
+                name = "salt",
+                count = 1
+            }
+        },
+        Reward = {
+            {
+                name = "SaltedCookedBigGameMeat",
+                count = 1
+            }
+        },
+        Job = 0,
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "food"
     },
-    [8] = {
-        ['Text'] = "Cooked Trout  - 1xRainbow Trout, 1xCrows_Garlic, 1xOleander Sage",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "a_c_fishrainbowtrout_01_ms",
-            ['Item2'] = "Crows_Garlic",
-            ['Item3'] = "Oleander_Sage",
-            ['Count'] = 1,
-            ['Count2'] = 1,
-            ['Count3'] = 1,
-            ['Reward'] ={{ name = "consumable_trout", count = 1}},
-            ['Job'] = 0, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
+    {
+        Text = "Plain Big Game Meat", -- name of item to craft on list
+        SubText = "InvMax = 10",
+        Desc = "Recipe: 1x Big Game Meat",
+        Items = {
+            {
+                name = "BigGameMeat",
+                count = 1
+            }
+        },
+        Reward = {
+            {
+                name = "CookedBigGameMeat",
+                count = 1
+            }
+        },
+        Job = 0,
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "food"
     },
-    [9] = {
-        ['Text'] = "Jerkied GameMeat - 1xGamey Meat, 2xSalt",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "Gamey_Meat",
-            ['Item2'] = "salt",
-            ['Item3'] = "",
-            ['Count'] = 1,
-            ['Count2'] = 2,
-            ['Count3'] = 0,
-            ['Reward'] ={{ name = "consumable_game", count = 1}},
-            ['Job'] = 0, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
+    {
+        Text = "PorkChop ", -- name of item to craft on list
+        SubText = "InvMax = 10",
+        Desc = "Recipe: 1x Pork",
+        Items = {
+            {
+                name = "Pork",
+                count = 1
+            }
+        },
+        Reward = {
+            {
+                name = "cookedpork",
+                count = 1
+            }
+        },
+        Job = 0,
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "food"
     },
-    [10] = {
-        ['Text'] = "Raspberry Water - 1xSugar, 1xWater, 1xRedRaspberry",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "sugar",
-            ['Item2'] = "water",
-            ['Item3'] = "Red_Raspberry",
-            ['Count'] = 1,
-            ['Count2'] = 1,
-            ['Count3'] = 1,
-            ['Reward'] ={{ name = "consumable_raspberrywater", count = 1}},
-            ['Job'] = 0, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
+    {
+        Text = "PickAxe ", -- name of item to craft on list
+        SubText = "InvMax = 5",
+        Desc = "Recipe: 10x Iron, 2x Wood",
+        Items = {
+            {
+                name = "iron",
+                count = 10
+            },
+            {
+                name = "wood",
+                count = 2
+            }
+        },
+        Reward = {
+            {
+                name = "pickaxe",
+                count = 1
+            }
+        },
+        Job = 0,
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "items"
     },
-     [11] = {
-        ['Text'] = "Cigarette - 1xIndian Tobbaco, 1xRolling paper",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "Indian_Tobbaco",
-            ['Item2'] = "rollingpaper",
-            ['Item3'] = "",
-            ['Count'] = 1,
-            ['Count2'] = 1,
-            ['Count3'] = 0,
-            ['Reward'] ={{ name = "cigarette", count = 1}},
-            ['Job'] = 0, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
+    {
+        Text = "Axe ", -- name of item to craft on list
+        SubText = "InvMax = 5",
+        Desc = "Recipe: 10x Iron, 2x Wood",
+        Items = {
+            {
+                name = "iron",
+                count = 10
+            },
+            {
+                name = "wood",
+                count = 2
+            }
+        },
+        Reward ={
+            {
+                name = "Axe",
+                count = 1
+            }
+        },
+        Job = 0,
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "items"
     },
-    [12] = {
-        ['Text'] = "Cigar - 2xIndian Tobbaco, 1xRolling paper",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "Indian_Tobbaco",
-            ['Item2'] = "rollingpaper",
-            ['Item3'] = "",
-            ['Count'] = 2,
-            ['Count2'] = 1,
-            ['Count3'] = 0,
-            ['Reward'] ={{ name = "cigar", count = 1}},
-            ['Job'] = 0, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
+    {
+        Text = "Campfire ", -- name of item to craft on list
+        SubText = "InvMax = 5",
+        Desc = "Recipe: 10x Rock, 5x Wood, 4x Coal",
+        Items = {
+            {
+                name = "rock",
+                count = 10
+            },
+            {
+                name = "wood",
+                count = 5
+            },
+            {
+                name = "coal",
+                count = 4
+            }
+        },
+        Reward ={
+            {
+                name = "campfire",
+                count = 1
+            }
+        },
+        Job = 0,
+        Location = 0, -- this item can only be crafted in Location 1 and 2  
+        Category = "items"
     },
-    [13] = {
-        ['Text'] = "Caramel - 2xSugar and 2xMilk",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "sugar",
-            ['Item2'] = "milk",
-            ['Item3'] = "",
-            ['Count'] = 2,
-            ['Count2'] = 2,
-            ['Count3'] = 0,
-            ['Reward'] ={{ name = "Caramel", count = 5}},
-            ['Job'] = 0, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
+    {
+        Text = "Plain Cooked Bird ", -- name of item to craft on list
+        SubText = "InvMax = 10",
+        Desc = "Recipe: 1x Raw Bird Meat",
+        Items = {
+            {
+                name = "rawbirdmeat",
+                count = 1
+            }
+        },
+        Reward ={
+            {
+                name = "cookedbird",
+                count = 1
+            }
+        },
+        Job = 0,
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "food"
     },
-    [14] = {
-        ['Text'] = "Heroin - 2xMorphine 2xAcid and 2xBlood Flower",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "morphine",
-            ['Item2'] = "acid",
-            ['Item3'] = "Blood_Flower",
-            ['Count'] = 2,
-            ['Count2'] = 2,
-            ['Count3'] = 2,
-            ['Reward'] ={{ name = "heroin", count = 1}},
-            ['Job'] = 0, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
+    {
+        Text = "Refined Gold Ore ", -- name of item to craft on list
+        SubText = "InvMax = 15",
+        Desc = "Recipe: 1x Gold Ore",
+        Items = {
+            {
+                name = "gold",
+                count = 1
+            }
+        },
+        Reward ={
+            {
+                name = "golden_nugget",
+                count = 1
+            }
+        },
+        Job = 0, 
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "items"
     },
-    [15] = {
-        ['Text'] = "GoldBar - 15xGold nugget",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "goldnugget",
-            ['Item2'] = "",
-            ['Item3'] = "",
-            ['Count'] = 15,
-            ['Count2'] = 0,
-            ['Count3'] = 0,
-            ['Reward'] ={{ name = "goldbar", count = 1}},
-            ['Job'] = 0, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
+    {
+        Text = "Plain Small Game ", -- name of item to craft on list
+        SubText = "InvMax = 10 ",
+        Desc = "Recipe: 1x Small Game Meat",
+        Items = {
+            {
+                name = "consumable_game",
+                count = 1
+            }
+        },
+        Reward ={
+            {
+                name = "plainsmallgame",
+                count = 1
+            }
+        },
+        Job = 0, 
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "food"
     },
-    [16] = {
-        ['Text'] = "Pipe - 2xWood, 1xIron and 2xCopper",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "wood",
-            ['Item2'] = "clay",
-            ['Item3'] = "copper",
-            ['Count'] = 2,
-            ['Count2'] = 1,
-            ['Count3'] = 2,
-            ['Reward'] ={{ name = "pipe", count = 1}},
-
-            ['Job'] = 0, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
+    {
+        Text = "Rope ", -- name of item to craft on list
+        SubText = "InvMax = 10",
+        Desc = "Recipe: 10x Fibers",
+        Items = {
+            {
+                name = "fibers",
+                count = 10
+            }
+        },
+        Reward ={
+            {
+                name = "rope",
+                count = 1
+            }
+        },
+        Job = 0, 
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "items"
     },
-    [17] = {
-        ['Text'] = "Beer - 2xBitterWeed and 1xAlcohol",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "Bitter_Weed",
-            ['Item2'] = "alcohol",
-            ['Item3'] = "",
-            ['Count'] = 2,
-            ['Count2'] = 1,
-            ['Count3'] = 0,
-            ['Reward'] ={{ name = "beer", count = 1}},
-            ['Job'] = {"saloon","bastille"}, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
+    {
+        Text = "Cloth ", -- name of item to craft on list
+        SubText = "InvMax = 10",
+        Desc = "Recipe: 10x Wool",
+        Items = {
+            {
+                name = "wool",
+                count = 10
+            }
+        },
+        Reward ={
+            {
+                name = "cloth",
+                count = 1
+            }
+        },
+        Job = 0, 
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "items"
     },
-    [18] = {
-        ['Text'] = "Wine - 2xBlackberry and 1xAlcohol",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "Black_Berry",
-            ['Item2'] = "alcohol",
-            ['Item3'] = "",
-            ['Count'] = 2,
-            ['Count2'] = 1,
-            ['Count3'] = 0,
-            ['Reward'] ={{ name = "wine", count = 1}},
-            ['Job'] = {"saloon","bastille"}, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
+    {
+        Text = "Tent ", -- name of item to craft on list
+        SubText = "InvMax = 5 ",
+        Desc = "Recipe: 4x Cloth, 3x Rope, 2x Wood",
+        Items = {
+            {
+                name = "cloth",
+                count = 4
+            },
+            {
+                name = "rope",
+                count = 3
+            },
+            {
+                name = "wood",
+                count = 2
+            }
+        },
+        Reward ={
+            {
+                name = "tent",
+                count = 1
+            }
+        },
+        Job = 0, 
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "items"
     },
-    [19] = {
-        ['Text'] = "Blackberry Water - 1xSugar, 1xWater, 1xBlackBerry",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "sugar",
-            ['Item2'] = "water",
-            ['Item3'] = "Black_Berry",
-            ['Count'] = 1,
-            ['Count2'] = 1,
-            ['Count3'] = 1,
-            ['Reward'] ={{ name = "consumable_raspberrywater", count = 1}},
-            ['Job'] = 0, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
+    {
+        Text = "Bedroll ", -- name of item to craft on list
+        SubText = "InvMax = 5",
+        Desc = "Recipe: 4x Pelt, 1x Cloth, 2x Wood",
+        Items = {
+            {
+                name = "pelt",
+                count = 4
+            },
+            {
+                name = "cloth",
+                count = 1
+            },
+            {
+                name = "wood",
+                count = 2
+            }
+        },
+        Reward ={
+            {
+                name = "bedroll",
+                count = 1
+            }
+        },
+        Job = 0, 
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "items"
+    }, 
+    {
+        Text = "Cigar", -- name of item to craft on list
+        SubText = "InvMax = 20",
+        Desc = "Recipe: 1x Indian Tobacco, 1x Fiber",
+        Items = {
+            {
+                name = "Indian_Tobbaco",
+                count = 1
+            },
+            {
+                name = "fibers",
+                count = 1
+            }
+        },
+        Reward ={
+            {
+                name = "cigar",
+                count = 1
+            }
+        },
+        Job = 0, 
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "items"
     },
-    [20] = {
-        ['Text'] = "Snake Oil - 1xSnakeSkin, 1xAcid, 2xBitter Weed",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "SnakeSkin",
-            ['Item2'] = "acid",
-            ['Item3'] = "Bitter_Weed",
-            ['Count'] = 1,
-            ['Count2'] = 1,
-            ['Count3'] = 2,
-            ['Reward'] ={{ name = "Snake_Poison", count = 1}},
-            ['Job'] = 0, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
+    {
+        Text = "Cigarette ", -- name of item to craft on list
+        SubText = "InvMax = 20",
+        Desc = "Recipe: 1x Indian Tobacco, 1x Fiber",
+        Items = {
+            {
+                name = "Indian_Tobbaco",
+                count = 1
+            },
+            {
+                name = "fibers",
+                count = 1
+            }
+        },
+        Reward ={
+            {
+                name = "cigarette",
+                count = 1
+            }
+        },
+        Job = 0, 
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "items"
+    }, 
+    {
+        Text = "Steak n' Eggs ", -- name of item to craft on list
+        SubText = "InvMax = 10",
+        Desc = "Recipe: 2x Meat, 2x Eggs, 2x potatoes",
+        Items = {
+            {
+                name = "meat",
+                count = 2
+            },
+            {
+                name = "eggs",
+                count = 2
+            },
+            {
+                name = "potato",
+                count = 2
+            }
+        },
+        Reward ={
+            {
+                name = "steakeggs",
+                count = 1
+            }
+        },
+        Job = 0, 
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "food"
+    }, 
+    {
+        Text = "Veggie Stew ", -- name of item to craft on list
+        SubText = "InvMax = 10",
+        Desc = "Recipe: 2x Carrots, 2x Corn, 2x Potatoes, 1xwater, 2x Salt",
+        Items = {
+            {
+                name = "carrot",
+                count = 2
+            },
+            {
+                name = "corn",
+                count = 2
+            },
+            {
+                name = "potato",
+                count = 2
+            },
+            {
+                name = "water",
+                count = 1
+            },
+            {
+                name = "salt",
+                count = 2
+            }
+        },
+        Reward ={
+            {
+                name = "vegstew",
+                count = 1
+            }
+        },
+        Job = 0, 
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "food"
+    },   
+    {
+        Text = "Porkchops and Applesauce ", -- name of item to craft on list
+        SubText = "InvMax = 10",
+        Desc = "Recipe: 1x Pork, 2x Apples",
+        Items = {
+            {
+                name = "Pork",
+                count = 1
+            },
+            {
+                name = "apple",
+                count = 2
+            }
+        },
+        Reward ={
+            {
+                name = "porknapples",
+                count = 1
+            }
+        },
+        Job = 0, 
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "food"
     },
-    [21] = {
-        ['Text'] = "Herbal Med - 2xParasolMushroom, 2xEnglishMace, 2xCreepingThyme",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "Parasol_Mushroom",
-            ['Item2'] = "English_Mace",
-            ['Item3'] = "Creeking_Thyme",
-            ['Count'] = 2,
-            ['Count2'] = 2,
-            ['Count3'] = 2,
-            ['Reward'] ={{ name = "herbmed", count = 1}},
-            ['Job'] = 0, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
-    },
-
-    [22] = {
-        ['Text'] = "BlackBerry Ale - 1xBitterWeed, 2xBlackBerry 1xAlcohol",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "Bitter_Weed",
-            ['Item2'] = "Black_Berry",
-            ['Item3'] = "alcohol",
-            ['Count'] = 1,
-            ['Count2'] = 2,
-            ['Count3'] = 1,
-            ['Reward'] ={{ name = "blackberryale", count = 1}},
-            ['Job'] = {"saloon","bastille"}, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
-    },
-
-    [23] = {
-        ['Text'] = "Raspberry Ale - 1xBitterWeed, 2xRedRaspberry 1xAlcohol",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "Bitter_Weed",
-            ['Item2'] = "Red_Raspberry",
-            ['Item3'] = "alcohol",
-            ['Count'] = 1,
-            ['Count2'] = 2,
-            ['Count3'] = 1,
-            ['Reward'] ={{ name = "raspberryale", count = 1}},
-            ['Job'] = {"saloon","bastille"}, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
-    },
-
-    [24] = {
-        ['Text'] = "Syn - 1x Synpackage",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "synpackage",
-            ['Item2'] = "",
-            ['Item3'] = "",
-            ['Count'] = 1,
-            ['Count2'] = 0,
-            ['Count3'] = 0,
-            ['Reward'] ={{ name = "syn", count = 5}},
-            ['Job'] = {"saloon","bastille"}, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
-    },
-    
-    [25] = {
-        ['Text'] = "Breakfast  - 2xEgg, 2xmeat, 1xsalt",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "eggs",
-            ['Item2'] = "meat",
-            ['Item3'] = "salt",
-            ['Count'] = 2,
-            ['Count2'] = 2,
-            ['Count3'] = 1,
-            ['Reward'] ={{ name = "consumable_breakfast", count = 1}},
-            ['Job'] = 0, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
-    },
-    [26] = {
-        ['Text'] = "Edible Veggies - 1xCrowsGarlic, 1xParasolMushroom, 1xWildCarrot",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "Crows_Garlic",
-            ['Item2'] = "Parasol_Mushroom",
-            ['Item3'] = "Wild_Carrot",
-            ['Count'] = 1,
-            ['Count2'] = 1,
-            ['Count3'] = 1,
-            ['Reward'] ={{ name = "consumable_veggies", count = 1}},
-            ['Job'] = 0, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
-    },
-
-    [27] = {
-        ['Text'] = "Bottled Water - 1xGlass Bottle, 1xFull Water Bucket",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "glassbottle",
-            ['Item2'] = "wateringcan",
-            ['Item3'] = "",
-            ['Count'] = 1,
-            ['Count2'] = 1,
-            ['Count3'] = 0,
-            ['Reward'] ={{ name = "water", count = 1},{ name = "wateringcan_empty", count = 1}},
-            ['Job'] = 0, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
-    },
-
-    [28] = {
-        ['Text'] = "Ginseng Tea - 1xWater, 1xSugar, 1xAmericanGinseng ",
-        ['SubText'] = "",
-        ['Desc'] = "",
-        ['Param'] = {
-            ['Item'] = "water",
-            ['Item2'] = "sugar",
-            ['Item3'] = "American_Ginseng",
-            ['Count'] = 1,
-            ['Count2'] = 1,
-            ['Count3'] = 1,
-            ['Reward'] ={{ name = "ginsengtea", count = 1}},
-            ['Job'] = 0, -- the job required
-            ['prop'] = 0, -- 0 means any
-            ['location'] = 0, 
-
-        }
-    },
-
-    
-
+    {
+        Text = "Bird Stew ", -- name of item to craft on list
+        SubText = "InvMax = 10",
+        Desc = "Recipe: 2x Raw Bird, 2x Carrots, 1x Corn, 2x Water, 2x Salt",
+        Items = {
+            {
+                name = "rawbirdmeat",
+                count = 2
+            },
+            {
+                name = "carrot",
+                count = 2
+            },
+            {
+                name = "corn",
+                count = 1
+            },
+            {
+                name = "water",
+                count = 2
+            },
+            {
+                name = "salt",
+                count = 2
+            }
+        },
+        Reward ={
+            {
+                name = "birdstew",
+                count = 1
+            }
+        },
+        Job = 0, 
+        Location = 0, -- this item can only be crafted in Location 1 and 2 
+        Category = "food"
+    }
 }
