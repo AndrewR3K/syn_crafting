@@ -12,6 +12,10 @@ Join the [VORP Community Discord](https://discord.gg/23MPbQ6)
 5. Campfire based crafting
 6. Use campfire from inventory
 
+## Screenshots
+![image](https://user-images.githubusercontent.com/10902965/172117617-d736a536-d7b2-4bc9-acf8-afbbbe14a5da.png)
+![image](https://user-images.githubusercontent.com/10902965/172117635-fe602e26-1ede-49fc-aef6-d19397952d70.png)
+
 ## Installation
 1. Download this repo/codebase
 2. Extract and place `syn-crafting` into your `resources` folder
