@@ -18,8 +18,8 @@ Join the [VORP Community Discord](https://discord.gg/23MPbQ6)
 
 ## Installation
 1. Download this repo/codebase
-2. Extract and place `syn-crafting` into your `resources` folder
-3. Add `ensure syn-crafting` to your `server.cfg` file
+2. Extract and place `syn_crafting` into your `resources` folder
+3. Add `ensure syn_crafting` to your `server.cfg` file
 4. Restart your server (unless you have nightly restarts)
 
 ## How-to-configure
