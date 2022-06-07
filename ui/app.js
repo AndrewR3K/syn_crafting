@@ -3,8 +3,13 @@ const { createApp } = Vue;
 createApp({
   data() {
     return {
+      devMode: false,
       visible: false,
       showInput: false,
+      style: {
+        fontSize: 'm'
+      },
+      language: {},
       categories: [],
       consumables: {},
       currentRoute: 'home',
@@ -13,30 +18,136 @@ createApp({
       min: 1,
       max: 10,
       crafttime: 15000,
-      testData: [{"Type":1,"SubText":"InvMax = 10","Items":[{"name":"consumable_game","count":1},{"name":"salt","count":1}],"Text":"Seasoned Small Game ","Desc":"Recipe: 1 x SGM, 1 x Salt","Prop":0,"Job":0,"Reward":[{"name":"cookedsmallgame","count":2}],"Location":0},{"Type":1,"SubText":"InvMax = 10","Items":[{"name":"apple","count":1},{"name":"water","count":1},{"name":"sugar","count":1},{"name":"flour","count":1},{"name":"eggs","count":1}],"Text":"Apple Pie ","Desc":"Recipe: 1x Apple, 1x Water, 1x Sugar, 1x Egg, 1x Flour","Prop":0,"Job":0,"Reward":[{"name":"consumable_applepie","count":1}],"Location":0},{"Type":1,"SubText":"InvMax = 10","Items":[{"name":"meat","count":1}],"Text":"Steak ","Desc":"Recipe: 1x Meat","Prop":0,"Job":0,"Reward":[{"name":"steak","count":1}],"Location":0},{"Type":1,"SubText":"InvMax = 5","Items":[{"name":"Pork","count":1},{"name":"eggs","count":2}],"Text":"Breakfast ","Desc":"Recipe: 1x Pork, 2x Eggs","Prop":0,"Job":0,"Reward":[{"name":"consumable_breakfast","count":1}],"Location":0},{"Type":1,"SubText":"InvMax = 10","Items":[{"name":"blueberry","count":6},{"name":"water","count":1},{"name":"sugar","count":1},{"name":"eggs","count":1},{"name":"flour","count":1}],"Text":"Blueberry Pie ","Desc":"Recipe: 6x BlueBerry, 1 x Water, 1x Sugar, 1x Egg, 1x Flour","Prop":0,"Job":0,"Reward":[{"name":"consumable_blueberrypie","count":1}],"Location":0},{"Type":1,"SubText":"InvMax = 10 ","Items":[{"name":"Pork","count":1},{"name":"salt","count":1}],"Text":"Seasoned Porkchop","Desc":"Recipe: 1x Pork, 1x Salt","Prop":0,"Job":0,"Reward":[{"name":"saltedcookedpork","count":1}],"Location":0},{"Type":1,"SubText":"InvMax = 10","Items":[{"name":"BigGameMeat","count":1},{"name":"salt","count":1}],"Text":"Seasoned Big Game","Desc":"Recipe 1x Big Game Meat, 1x Salt","Prop":0,"Job":0,"Reward":[{"name":"SaltedCookedBigGameMeat","count":1}],"Location":0},{"Type":1,"SubText":"InvMax = 10","Items":[{"name":"BigGameMeat","count":1}],"Text":"Plain Big Game Meat","Desc":"Recipe: 1x Big Game Meat","Prop":0,"Job":0,"Reward":[{"name":"CookedBigGameMeat","count":1}],"Location":0},{"Type":1,"SubText":"InvMax = 10","Items":[{"name":"Pork","count":1}],"Text":"PorkChop ","Desc":"Recipe: 1x Pork","Prop":0,"Job":0,"Reward":[{"name":"cookedpork","count":1}],"Location":0},{"Type":0,"SubText":"InvMax = 5","Items":[{"name":"iron","count":10},{"name":"wood","count":2}],"Text":"PickAxe ","Desc":"Recipe: 10x Iron, 2x Wood","Prop":0,"Job":0,"Reward":[{"name":"pickaxe","count":1}],"Location":0},{"Type":0,"SubText":"InvMax = 5","Items":[{"name":"iron","count":10},{"name":"wood","count":2}],"Text":"Axe ","Desc":"Recipe: 10x Iron, 2x Wood","Prop":0,"Job":0,"Reward":[{"name":"Axe","count":1}],"Location":0},{"Type":0,"SubText":"InvMax = 5","Items":[{"name":"rock","count":10},{"name":"wood","count":5},{"name":"coal","count":4}],"Text":"Campfire ","Desc":"Recipe: 10x Rock, 5x Wood, 4x Coal","Prop":0,"Job":0,"Reward":[{"name":"campfire","count":1}],"Location":0},{"Type":1,"SubText":"InvMax = 10","Items":[{"name":"rawbirdmeat","count":1}],"Text":"Plain Cooked Bird ","Desc":"Recipe: 1x Raw Bird Meat","Prop":0,"Job":0,"Reward":[{"name":"cookedbird","count":1}],"Location":0},{"Type":0,"SubText":"InvMax = 15","Items":[{"name":"gold","count":1}],"Text":"Refined Gold Ore ","Desc":"Recipe: 1x Gold Ore","Prop":0,"Job":0,"Reward":[{"name":"golden_nugget","count":1}],"Location":0},{"Type":1,"SubText":"InvMax = 10 ","Items":[{"name":"consumable_game","count":1}],"Text":"Plain Small Game ","Desc":"Recipe: 1x Small Game Meat","Prop":0,"Job":0,"Reward":[{"name":"plainsmallgame","count":1}],"Location":0},{"Type":0,"SubText":"InvMax = 10","Items":[{"name":"fibers","count":10}],"Text":"Rope ","Desc":"Recipe: 10x Fibers","Prop":0,"Job":0,"Reward":[{"name":"rope","count":1}],"Location":0},{"Type":0,"SubText":"InvMax = 10","Items":[{"name":"wool","count":10}],"Text":"Cloth ","Desc":"Recipe: 10x Wool","Prop":0,"Job":0,"Reward":[{"name":"cloth","count":1}],"Location":0},{"Type":0,"SubText":"InvMax = 5 ","Items":[{"name":"cloth","count":4},{"name":"rope","count":3},{"name":"wood","count":2}],"Text":"Tent ","Desc":"Recipe: 4x Cloth, 3x Rope, 2x Wood","Prop":0,"Job":0,"Reward":[{"name":"tent","count":1}],"Location":0},{"Type":0,"SubText":"InvMax = 5","Items":[{"name":"pelt","count":4},{"name":"cloth","count":1},{"name":"wood","count":2}],"Text":"Bedroll ","Desc":"Recipe: 4x Pelt, 1x Cloth, 2x Wood","Prop":0,"Job":0,"Reward":[{"name":"bedroll","count":1}],"Location":0},{"Type":0,"SubText":"InvMax = 20","Items":[{"name":"Indian_Tobbaco","count":1},{"name":"fibers","count":1}],"Text":"Cigar","Desc":"Recipe: 1x Indian Tobacco, 1x Fiber","Prop":0,"Job":0,"Reward":[{"name":"cigar","count":1}],"Location":0},{"Type":0,"SubText":"InvMax = 20","Items":[{"name":"Indian_Tobbaco","count":1},{"name":"fibers","count":1}],"Text":"Cigarette ","Desc":"Recipe: 1x Indian Tobacco, 1x Fiber","Prop":0,"Job":0,"Reward":[{"name":"cigarette","count":1}],"Location":0},{"Type":1,"SubText":"InvMax = 10","Items":[{"name":"meat","count":2},{"name":"eggs","count":2},{"name":"potato","count":2}],"Text":"Steak n' Eggs ","Desc":"Recipe: 2x Meat, 2x Eggs, 2x potatoes","Prop":0,"Job":0,"Reward":[{"name":"steakeggs","count":1}],"Location":0},{"Type":1,"SubText":"InvMax = 10","Items":[{"name":"carrot","count":2},{"name":"corn","count":2},{"name":"potato","count":2},{"name":"water","count":1},{"name":"salt","count":2}],"Text":"Veggie Stew ","Desc":"Recipe: 2x Carrots, 2x Corn, 2x Potatoes, 1xwater, 2x Salt","Prop":0,"Job":0,"Reward":[{"name":"vegstew","count":1}],"Location":0},{"Type":1,"SubText":"InvMax = 10","Items":[{"name":"Pork","count":1},{"name":"apple","count":2}],"Text":"Porkchops and Applesauce ","Desc":"Recipe: 1x Pork, 2x Apples","Prop":0,"Job":0,"Reward":[{"name":"porknapples","count":1}],"Location":0},{"Type":1,"SubText":"InvMax = 10","Items":[{"name":"rawbirdmeat","count":2},{"name":"carrot","count":2},{"name":"corn","count":1},{"name":"water","count":2},{"name":"salt","count":2}],"Text":"Bird Stew ","Desc":"Recipe: 2x Raw Bird, 2x Carrots, 1x Corn, 2x Water, 2x Salt","Prop":0,"Job":0,"Reward":[{"name":"birdstew","count":1}],"Location":0}]
+      testData: [
+        {
+          Text: "Meat Bfast ",
+          SubText: "InvMax = 10",
+          Desc: "Recipe: 1x Apple, 1x Water, 1x Sugar, 1x Egg, 1x Flour",
+          Items: [
+              {
+                  name: "meat",
+                  count: 1
+              },
+              {
+                  name: "salt",
+                  count: 1
+              }
+          ],
+          Reward: [
+              {
+                  name: "consumable_breakfast",
+                  count: 1
+              }
+          ],
+          Job: 0, 
+          Location: 0,
+          Category: "food"
+        }
+      ],
+      testCategory: [
+        {
+          ident: 'food', 
+          text: 'Craft Food'
+        }
+      ]
     };
   },
   mounted() {
+    // Window Event Listeners
     window.addEventListener("message", this.onMessage);
+    window.addEventListener("keydown", this.onKeypress)
+
     // Debug only
-    // this.setData(this.testData)
+    if (this.devMode) {
+      let devData = {
+        craftables: this.testData,
+        categories: this.testCategory,
+        crafttime: 15000,
+        style: {
+          fontSize: 'm'
+        },
+        language: {
+          InputHeader: 'How many {{msg}} you want to craft',
+          InputCraft: 'Craft Item',
+          InputCancel: 'Cancel',
+          BackButton: 'Back',
+          ExitButton: 'Exit',
+          CraftHeader: 'Crafting',
+          CraftText: 'Press [~e~G~q~] to Craft',
+          InvalidAmount: 'Invalid Amount',
+          Crafting: 'Crafting...',
+          FinishedCrafting: 'You finished crafting',
+          PlaceFire: "You're placing a campfire...",
+          PutOutFire: 'Putting out the campfire...',
+          NotEnough: 'Not enough material for this recipe',
+          NotJob: 'You dont have the required job '
+        }
+      }
+      this.setData(devData)
+      this.visible = true
+    }
   },
   destroyed() {
+    // Remove listeners when UI is destroyed to save on memory
     window.removeEventListener("message");
+    window.removeEventListener('keydown')
   },
   computed: {
+    fontClass() {
+      let fontc = {}
+
+      switch(this.style.fontSize) {
+        case 's':
+          fontc['smallfont'] = true
+          break;
+        case 'm':
+          fontc['mediumfont'] = true
+          break;
+        case 'l':
+          fontc['largefont'] = true
+          break;
+        default:
+          break; 
+      }
+
+      return fontc
+    },
+    InputCraftText() {
+      return  this.activeCraftable.Text && this.language.InputHeader ? this.language.InputHeader.replace('{{msg}}', this.activeCraftable.Text) : ''
+    }
   },
   methods: {
     onMessage(event) {
-      console.log("EVENT RECEIVED:", event.data.type)
       switch(event.data.type) {
         case "bcc-craft-open":
-          this.setData(event.data.craftables, event.data.categories, event.data.crafttime)
+          this.setData(event.data)
           this.visible = true;
+          break;
+        case "bcc-craft-animate":
+          this.animationPlaying()
           break;
         default:
           break;
       }
+    },
+    onKeypress(event) {
+      if (event.key === "I" || event.key === "i") {
+        fetch(`https://${GetParentResourceName()}/bcc-openinv`, {
+          method: 'POST'
+        })
+      }
+
+      if (event.key === "Escape" || event.key === "esc") {
+        this.currentRoute = 'home'
+        this.closeView()
+      }
+    },
+    animationPlaying() {
+      this.visible = false
+        
+      setTimeout(()=>{
+        this.visible = true
+      }, this.crafttime);
     },
     craftItem() {
       fetch(`https://${GetParentResourceName()}/bcc-craftevent`, {
@@ -45,20 +156,10 @@ createApp({
           craftable: this.activeCraftable,
           quantity: this.quantity
         })
-      }).then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        return Promise.reject(response);
-      }).then(() => {
+      }).then(resp => resp.json()).then(resp => {
         this.showInput = false
         this.activeCraftable = null
         this.quantity = 1
-
-        this.visible = false
-        setTimeout(()=>{
-          this.visible = true
-        }, this.crafttime);
       }).catch(function (error) {
         console.warn(error);
       })
@@ -101,20 +202,33 @@ createApp({
         method: 'POST'
       })
     },
-    setData(data, cat, crafttime) {
+    setData(data) {
+      let craftables = data.craftables
+      let categories = data.categories
+      let crafttime = data.crafttime
+      let style = data.style
+      let language = data.language
+
+
+
       let consumables = {}
 
-      cat.forEach(cata => {
+      // Setup object with keys
+      categories.forEach(cata => {
         consumables[cata.ident] = []
       });
 
-      data.forEach(element => {
+      // Fill object created above
+      craftables.forEach(element => {
         consumables[element.Category].push(element)
       });
 
+
+      this.language = language
       this.consumables = consumables
-      this.categories = cat
+      this.categories = categories
       this.crafttime = crafttime
+      this.style = style
     }
   },
 }).mount("#app");

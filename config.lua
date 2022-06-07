@@ -1,20 +1,39 @@
 Config = {}
 
+Config.defaultlang = "en_lang"
+
+-- Crafting Key
+Config.keys = {
+    G = 0x760A9C6F
+}
+
+-- Options: s, m, l
+Config.styles = {
+    fontSize = 'm'
+}
+
+Config.commands = {
+    campfire = true,
+    extinguish = true
+}
+
 -- distance to interact with Location
 Config.interactiondist = 2.5
 
 -- Craftable Locations
 Config.locations = {
-    --["Location1"] = {x = 499.64,y = 677.99,z =117.45},
-   -- ["Location2"] = {x = 2266.73,y = -767.57,z =42.32},
-}
-
-Config.keys = {
-    G = 0x760A9C6F
-}
-
-Config.commands = {
-    campfire = true
+    Location1 = {
+        name = 'Crafting Express',
+        x = 499.64, 
+        y = 677.99, 
+        z = 117.45
+    },
+    Location2 = {
+        name = 'Crafting Express',
+        x = 2266.73,
+        y = -767.57,
+        z = 42.32
+    },
 }
 
 Config.PlaceableCampfire = "p_campfire05x"
@@ -38,30 +57,30 @@ Config.categories = {
 }
 
 Config.crafting = {
-    {
-        Text = "Meat Bfast ", -- name of item to craft on list
-        SubText = "InvMax = 10",
-        Desc = "Recipe: 1x Meat, 1x Salt",
-        Items = {
-            {
-                name = "meat",
-                count = 1
-            },
-            {
-                name = "salt",
-                count = 1
-            }
-        },
-        Reward = {
-            {
-                name = "consumable_breakfast",
-                count = 1
-            }
-        },
-        Job = 0, 
-        Location = 0, -- this item can only be crafted in Location 1 and 2 
-        Category = "food"
-    },
+    -- {
+    --     Text = "Meat Bfast ", -- name of item to craft on list
+    --     SubText = "InvMax = 10",
+    --     Desc = "Recipe: 1x Meat, 1x Salt",
+    --     Items = {
+    --         {
+    --             name = "meat",
+    --             count = 1
+    --         },
+    --         {
+    --             name = "salt",
+    --             count = 1
+    --         }
+    --     },
+    --     Reward = {
+    --         {
+    --             name = "consumable_breakfast",
+    --             count = 1
+    --         }
+    --     },
+    --     Job = 0, 
+    --     Location = 0, -- this item can only be crafted in Location 1 and 2 
+    --     Category = "food"
+    -- },
     {
         Text = "Seasoned Small Game ",
         SubText = "InvMax = 10",

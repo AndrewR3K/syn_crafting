@@ -8,7 +8,6 @@ VorpInv = exports.vorp_inventory:vorp_inventoryApi()
 -- Register usable Campfire
 VorpInv.RegisterUsableItem("campfire", function(data)
     VorpInv.subItem(data.source, "campfire", 1)
-    TriggerClientEvent("vorp:TipRight", data.source, "You're placing a campfire", 5000)
     TriggerClientEvent("syn:campfire", data.source)
 end)
 
@@ -20,6 +19,11 @@ AddEventHandler( 'syn:findjob', function ()
     TriggerClientEvent("bcc_crafting:sendjob",_source,job)
 end)
 
+RegisterServerEvent('syn:openInv')
+AddEventHandler( 'syn:openInv', function ()
+    local _source = source
+    VorpInv.OpenInv(_source)
+end)
 
 RegisterServerEvent('syn:craftingalg')
 AddEventHandler( 'syn:craftingalg', function (crafting, countz)
@@ -74,10 +78,10 @@ AddEventHandler( 'syn:craftingalg', function (crafting, countz)
                 VorpInv.addItem(source, v.name, countx)
             end
         else
-            TriggerClientEvent("vorp:TipRight", source, "Not enough material for this recipe", 3000)
+            TriggerClientEvent("vorp:TipRight", source, _U('NotEnough'), 3000)
         end
     else
-        TriggerClientEvent("vorp:TipRight", source, "You dont have the required job "..job, 3000)
+        TriggerClientEvent("vorp:TipRight", source, _U('NotJob')..job, 3000)
     end
 
 end)

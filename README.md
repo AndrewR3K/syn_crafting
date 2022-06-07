@@ -11,7 +11,12 @@ Join the [VORP Community Discord](https://discord.gg/23MPbQ6)
 4. Location based crafting
 5. Campfire based crafting
 6. Use campfire from inventory
-    - `/dcampfire` will despawn the fire after an animation
+    - `/extinguish` will despawn the fire after an animation
+7. Easy Locale(Language) Support
+8. Font Size Presets (s, m, l)
+9. Open Inventory when in crafting window (Press I) **THIS REQUIRES LATEST VERSION OF VORP_CORE-LUA**
+10. Quick Close Crafting (Press esc)
+11. Implements UIPrompt
 
 ## Screenshots
 ![image](https://user-images.githubusercontent.com/10902965/172117617-d736a536-d7b2-4bc9-acf8-afbbbe14a5da.png)
@@ -34,5 +39,5 @@ All configurations available in `/config.lua`
 
 ## Dependency
  - Vorp Core
- - Vorp Inventory
+ - Vorp Inventory **(MUST HAVE THE LATEST)**
  - [progressBars](https://github.com/PokeSerGG/progressBars)
