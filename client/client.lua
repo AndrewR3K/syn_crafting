@@ -11,8 +11,61 @@ local type = 0
 local campfire = 0
 local initialized = false
 local uiopen = false
+local keyopen = false
+local craftingx = Config.crafting
+
+local Anims = {
+    ["craft"] = {
+        dict = "mech_inventory@crafting@fallbacks",
+        name = "full_craft_and_stow", 
+        flag = 2,
+        type = 'standard'
+    },
+    ["sit"] = {
+        dict = "mech_dynamic@world_player_dynamic_sit_bedroll@crafting@arthur@base",
+        name = "base", 
+        flag = 2,
+        type = 'standard'
+    },
+    ["campfire"] = {
+        dict = "script_campfire@lighting_fire@male_male",
+        name = "light_fire_b_p2_male_b", 
+        flag = 2,
+        type = 'standard'
+	},
+    ["crouch"] = {
+        dict = "MECH_DYNAMIC@WORLD_PLAYER_DYNAMIC_KNEEL_GROUND@GENERIC@MALE_A@base",
+        name = "base", 
+        flag = 2,
+        type = 'standard'
+    },
+}
 
 keys = Config.keys
+
+function playAnimation(ped, anim)
+    local animation = Anims[anim]
+	if not DoesAnimDictExist(animation.dict) then
+		return
+	end
+
+    if animation.type == 'scenario' then
+        TaskStartScenarioInPlace(ped, GetHashKey(animation.hash), 12000, true, false, false, false)
+    elseif animation.type == 'standard' then
+        RequestAnimDict(animation.dict)
+
+        while not HasAnimDictLoaded(animation.dict) do
+            Wait(0)
+        end
+
+        TaskPlayAnim(ped, animation.dict, animation.name, 1.0, 1.0, -1, animation.flag, 0, false, false, false, '', false)
+    end
+end
+
+function endAnimation(anim) 
+    local animation = Anims[anim]
+    RemoveAnimDict(animation.dict)
+end
 
 function whenKeyJustPressed(key)
     if Citizen.InvokeNative(0x580417101DDB492F, 0, key) then
@@ -22,8 +75,6 @@ function whenKeyJustPressed(key)
     end
 end
 
-local keyopen = false
-local craftingx = Config.crafting
 function contains(table, element)
     if table ~= 0 then
         for k, v in pairs(table) do
@@ -52,6 +103,8 @@ function openUI()
 
     if allText then
         uiopen = true
+        local playerPed = PlayerPedId()
+        playAnimation(playerPed, "sit")
         SendNUIMessage({
             type = 'bcc-craft-open',
             craftables = Config.crafting,
@@ -125,6 +178,7 @@ end)
 RegisterNUICallback('bcc-craft-close', function(args, cb)
     SetNuiFocus(false, false)
     uiopen = false
+    endAnimation("sit")
     cb('ok')
 end)
 
@@ -155,10 +209,12 @@ AddEventHandler("syn:crafting", function()
         type = 'bcc-craft-animate'
     })
     
-    TaskStartScenarioInPlace(playerPed, GetHashKey('WORLD_HUMAN_CROUCH_INSPECT'), Config.CraftTime, true, false, false, false)
+    playAnimation(playerPed, "crouch")
+    -- TaskStartScenarioInPlace(playerPed, GetHashKey('WORLD_HUMAN_CROUCH_INSPECT'), Config.CraftTime, true, false, false, false)
     exports['progressBars']:startUI(Config.CraftTime, _U('Crafting'))
     
     Citizen.Wait(Config.CraftTime)
+    endAnimation("craft") 
     TriggerEvent("vorp:TipRight", _U('FinishedCrafting'), 4000)
     keyopen = false
     iscrafting = false
@@ -172,10 +228,12 @@ function placeCampfire()
     end
 
     local playerPed = PlayerPedId()
-    TaskStartScenarioInPlace(playerPed, GetHashKey('WORLD_HUMAN_CROUCH_INSPECT'), 30000, true, false, false, false)
+    playAnimation(playerPed, "campfire")
+    
     exports['progressBars']:startUI(30000, _U('PlaceFire'))
     Citizen.Wait(30000)
-    
+    endAnimation("campfire")
+
     ClearPedTasksImmediately(PlayerPedId())
     local x,y,z = table.unpack(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 2.0, -1.55))
     
