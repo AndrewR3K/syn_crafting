@@ -78,8 +78,9 @@ Config.crafting = {
             }
         },
         Job = 0, 
-        Location = 0, -- this item can only be crafted in Location 1 and 2 
-        Category = "food"
+        Location = 0, -- this item can only be crafted in Location 1 and 2
+        Category = "food",
+        Animation = 'knifecooking'
     },
     {
         Text = "Seasoned Small Game ",
@@ -103,7 +104,8 @@ Config.crafting = {
         },
         Job = 0, -- the job required
         Location = 0, -- keep 0 to allow crafting from any marked Location
-        Category = "food"
+        Category = "food",
+        Animation = 'knifecooking'
     }, 
     {
         Text = "Apple Pie ", -- name of item to craft on list
@@ -160,7 +162,8 @@ Config.crafting = {
         },
         Job = 0, 
         Location = 0, -- this item can only be crafted in Location 1 and 2 
-        Category = "food"
+        Category = "food",
+        Animation = 'spindlecook'
     },
     {
         Text = "Breakfast ", -- name of item to craft on list
@@ -239,13 +242,14 @@ Config.crafting = {
         },
         Reward ={
             {
-                name = "saltedcookedpork",
+                name = "knifecooking",
                 count = 1
             }
         },
         Job = 0,
         Location = 0, -- this item can only be crafted in Location 1 and 2 
-        Category = "food"
+        Category = "food",
+        Animation = 'spindlecook'
     },
     {
         Text = "Seasoned Big Game", -- name of item to craft on list
@@ -269,7 +273,8 @@ Config.crafting = {
         },
         Job = 0,
         Location = 0, -- this item can only be crafted in Location 1 and 2 
-        Category = "food"
+        Category = "food",
+        Animation = 'spindlecook'
     },
     {
         Text = "Plain Big Game Meat", -- name of item to craft on list
@@ -289,7 +294,8 @@ Config.crafting = {
         },
         Job = 0,
         Location = 0, -- this item can only be crafted in Location 1 and 2 
-        Category = "food"
+        Category = "food",
+        Animation = 'spindlecook'
     },
     {
         Text = "PorkChop ", -- name of item to craft on list
@@ -309,7 +315,8 @@ Config.crafting = {
         },
         Job = 0,
         Location = 0, -- this item can only be crafted in Location 1 and 2 
-        Category = "food"
+        Category = "food",
+        Animation = 'knifecooking'
     },
     {
         Text = "PickAxe ", -- name of item to craft on list
