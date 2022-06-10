@@ -14,31 +14,82 @@ local uiopen = false
 local keyopen = false
 local craftingx = Config.crafting
 
+-- Props
+local mainprop
+local subprop
+
+-- TODO: Anstract animations to its own helper folder/file
 local Anims = {
     ["craft"] = {
         dict = "mech_inventory@crafting@fallbacks",
         name = "full_craft_and_stow", 
-        flag = 2,
+        flag = 27,
         type = 'standard'
     },
-    ["sit"] = {
-        dict = "mech_dynamic@world_player_dynamic_sit_bedroll@crafting@arthur@base",
-        name = "base", 
-        flag = 2,
-        type = 'standard'
+    ["spindlecook"] = {
+        dict = "amb_camp@world_camp_fire_cooking@male_d@wip_base",
+        name = "wip_base",
+        flag = 17,
+        type = 'standard',
+        prop = {
+            model = 'p_stick04x',
+            coords = {
+                x = 0.2, 
+                y = 0.04,
+                z = 0.12,
+                xr = 170.0,
+                yr = 50.0,
+                zr = 0.0
+            },
+            bone = 'SKEL_R_Finger13',
+            subprop = {
+                model = 's_meatbit_chunck_medium01x',
+                coords = {
+                    x = -0.30, 
+                    y = -0.08,
+                    z = -0.30,
+                    xr = 0.0,
+                    yr = 0.0,
+                    zr = 70.0
+                }
+            }
+        }
+    },
+    ["knifecooking"] = {
+        dict = "amb_camp@world_player_fire_cook_knife@male_a@wip_base",
+        name = "wip_base", 
+        flag = 17,
+        type = 'standard',
+        prop = {
+            model = 'w_melee_knife06',
+            coords = {
+                x = -0.01, 
+                y = -0.02,
+                z = 0.02,
+                xr = 190.0,
+                yr = 0.0,
+                zr = 0.0
+            },
+            bone = 'SKEL_R_Finger13',
+            subprop = {
+                model = 'p_redefleshymeat01xa',
+                coords = {
+                    x = 0.00, 
+                    y = 0.02,
+                    z = -0.20,
+                    xr = 0.0,
+                    yr = 0.0,
+                    zr = 0.0
+                }
+            }
+        }
     },
     ["campfire"] = {
         dict = "script_campfire@lighting_fire@male_male",
         name = "light_fire_b_p2_male_b", 
-        flag = 2,
+        flag = 17,
         type = 'standard'
-	},
-    ["crouch"] = {
-        dict = "MECH_DYNAMIC@WORLD_PLAYER_DYNAMIC_KNEEL_GROUND@GENERIC@MALE_A@base",
-        name = "base", 
-        flag = 2,
-        type = 'standard'
-    },
+	}
 }
 
 keys = Config.keys
@@ -48,6 +99,20 @@ function playAnimation(ped, anim)
 	if not DoesAnimDictExist(animation.dict) then
 		return
 	end
+    
+    if animation.prop then
+        local coords = GetEntityCoords(ped)
+        mainprop = CreateObject(animation.prop.model, coords.x, coords.y, coords.z, true, true, false, false, true)
+        local boneIndex = GetEntityBoneIndexByName(ped, animation.prop.bone)
+        AttachEntityToEntity(mainprop, ped, boneIndex, animation.prop.coords.x, animation.prop.coords.y, animation.prop.coords.z, animation.prop.coords.xr, animation.prop.coords.yr, animation.prop.coords.zr, true, true, false, true, 1, true)
+        
+        if animation.prop.subprop then
+            local pcoords = GetEntityCoords(subprop)
+            subprop = CreateObject(animation.prop.subprop.model, pcoords.x, pcoords.y, pcoords.z, true, true, false, false, true)
+            AttachEntityToEntity(subprop, ped, boneIndex, animation.prop.subprop.coords.x, animation.prop.subprop.coords.y, animation.prop.subprop.coords.z, animation.prop.subprop.coords.xr, animation.prop.subprop.coords.yr, animation.prop.subprop.coords.zr, true, true, false, true, 1, true)
+        end
+    end
+
 
     if animation.type == 'scenario' then
         TaskStartScenarioInPlace(ped, GetHashKey(animation.hash), 12000, true, false, false, false)
@@ -57,14 +122,26 @@ function playAnimation(ped, anim)
         while not HasAnimDictLoaded(animation.dict) do
             Wait(0)
         end
-
-        TaskPlayAnim(ped, animation.dict, animation.name, 1.0, 1.0, -1, animation.flag, 0, false, false, false, '', false)
+        TaskPlayAnim(ped, animation.dict, animation.name, 1.0, 1.0, -1, animation.flag, 1.0, false, false, false, '', false)
     end
 end
 
 function endAnimation(anim) 
     local animation = Anims[anim]
     RemoveAnimDict(animation.dict)
+    StopAnimTask(PlayerPedId(), animation.dict, animation.name, 1.0)
+
+    if mainprop then
+        DeleteObject(mainprop)    
+    end
+
+    if subprop then
+        DeleteObject(subprop)
+    end
+end
+
+function endAnimations()
+    ClearPedTasksImmediately(PlayerPedId())
 end
 
 function whenKeyJustPressed(key)
@@ -86,16 +163,12 @@ function contains(table, element)
     return false
 end
 
-function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
-    local str = CreateVarString(10, "LITERAL_STRING", str)
-    SetTextScale(w, h)
-    SetTextColor(math.floor(col1), math.floor(col2), math.floor(col3), math.floor(a))
-    SetTextCentre(centre)
-    SetTextFontForCurrentCommand(15)
-    if enableShadow then
-        SetTextDropshadow(1, 0, 0, 0, 255)
-    end
-    DisplayText(str, x, y)
+function forceRestScenario(val)
+    Citizen.InvokeNative(0xE5A3DD2FF84E1A4B, val) 
+end
+
+function disableAllPrompts()
+    Citizen.InvokeNative(0xF1622CE88A1946FB) 
 end
 
 function openUI()
@@ -104,7 +177,10 @@ function openUI()
     if allText then
         uiopen = true
         local playerPed = PlayerPedId()
-        playAnimation(playerPed, "sit")
+        forceRestScenario(true)
+        
+
+        
         SendNUIMessage({
             type = 'bcc-craft-open',
             craftables = Config.crafting,
@@ -139,7 +215,7 @@ Citizen.CreateThread(function()
         for k, v in pairs(Config.craftingProps) do
             local campfire = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.5, GetHashKey(v), 0) -- prop required to interact
             if campfire ~= false and iscrafting == false and uiopen == false  then
-
+                        
                 local label = CreateVarString(10, 'LITERAL_STRING', 'Campfire')
                 PromptSetActiveGroupThisFrame(promptGroup, label)
 
@@ -172,13 +248,19 @@ Citizen.CreateThread(function()
                 end
             end
         end
+
+        -- Hide the native rest prompts while the crafting menu is open
+        if (uiopen == true or iscrafting == true) then
+            disableAllPrompts()
+        end
     end
 end)
 
 RegisterNUICallback('bcc-craft-close', function(args, cb)
     SetNuiFocus(false, false)
     uiopen = false
-    endAnimation("sit")
+    forceRestScenario(false)
+
     cb('ok')
 end)
 
@@ -200,22 +282,30 @@ RegisterNUICallback('bcc-craftevent', function(args, cb)
 end)
 
 RegisterNetEvent("syn:crafting")
-AddEventHandler("syn:crafting", function()
+AddEventHandler("syn:crafting", function(animation)
     local playerPed = PlayerPedId()
     iscrafting = true
-    
+
     -- Sent NUI a message to hide its UI while the crafting animations play out
     SendNUIMessage({
         type = 'bcc-craft-animate'
     })
+    SetNuiFocus(true, false)
     
-    playAnimation(playerPed, "crouch")
-    -- TaskStartScenarioInPlace(playerPed, GetHashKey('WORLD_HUMAN_CROUCH_INSPECT'), Config.CraftTime, true, false, false, false)
+    if not animation then
+        animation = "craft"
+    end
+
+    playAnimation(playerPed, animation)
     exports['progressBars']:startUI(Config.CraftTime, _U('Crafting'))
     
-    Citizen.Wait(Config.CraftTime)
-    endAnimation("craft") 
+    Wait(Config.CraftTime)
+    
+    endAnimation(animation)
+    
     TriggerEvent("vorp:TipRight", _U('FinishedCrafting'), 4000)
+    SetNuiFocus(true, true)
+
     keyopen = false
     iscrafting = false
 end)
@@ -230,11 +320,10 @@ function placeCampfire()
     local playerPed = PlayerPedId()
     playAnimation(playerPed, "campfire")
     
-    exports['progressBars']:startUI(30000, _U('PlaceFire'))
-    Citizen.Wait(30000)
+    exports['progressBars']:startUI(20000, _U('PlaceFire'))
+    Citizen.Wait(20000)
     endAnimation("campfire")
-
-    ClearPedTasksImmediately(PlayerPedId())
+    endAnimations() 
     local x,y,z = table.unpack(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 2.0, -1.55))
     
     local prop = CreateObject(GetHashKey(Config.PlaceableCampfire), x, y, z, true, false, true)
@@ -253,6 +342,16 @@ if Config.commands.campfire == true then
         placeCampfire()
     end, false)
 end
+
+RegisterCommand("testanimation", function(source, args, rawCommand)
+    local playerPed = PlayerPedId()
+
+    playAnimation(playerPed, args[1])
+    Citizen.Wait(8000)
+
+    endAnimation(args[1])
+    -- endAnimations()
+end, false)
 
 if Config.commands.extinguish == true then
     RegisterCommand('extinguish', function(source, args, rawCommand)

@@ -92,9 +92,11 @@ AddEventHandler( 'syn:craftingalg', function (crafting, countz)
                 for k,v in pairs(reward) do
                     local countx = v.count * countz
                     VorpInv.addItem(_source, v.name, countx)
-                end 
+                end
+
+                TriggerClientEvent("syn:crafting", _source, crafting.Animation)
             else
-                TriggerClientEvent("vorp:TipRight", _source, _U('TooFull'), 4000)
+                TriggerClientEvent("vorp:TipRight", _source, _U('TooFull'), 3000)
             end
         else
             TriggerClientEvent("vorp:TipRight", _source, _U('NotEnough'), 3000)
