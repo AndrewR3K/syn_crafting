@@ -19,6 +19,7 @@ shared_scripts {
 files {
     'ui/*',
     'ui/assets/*',
+    'ui/vendor/*',
     'ui/assets/fonts/*'
 }
     

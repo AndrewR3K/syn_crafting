@@ -16,7 +16,7 @@ AddEventHandler( 'syn:findjob', function ()
     local _source = source
     local Character = VorpCore.getUser(_source).getUsedCharacter
     local job = Character.job
-    TriggerClientEvent("bcc_crafting:sendjob",_source,job)
+    TriggerClientEvent("syn:setjob", _source, job)
 end)
 
 RegisterServerEvent('syn:openInv')
@@ -40,6 +40,7 @@ AddEventHandler( 'syn:craftingalg', function (crafting, countz)
         craft = true
     end
 
+    -- Job restrictions active
     if job ~=0 then
         for k,v in pairs(job) do  
             if v == playerjob then 
@@ -47,7 +48,6 @@ AddEventHandler( 'syn:craftingalg', function (crafting, countz)
             end
         end
     end
-
 
     if craft then 
         -- Check that the user has all crafting items available
@@ -102,6 +102,6 @@ AddEventHandler( 'syn:craftingalg', function (crafting, countz)
             TriggerClientEvent("vorp:TipRight", _source, _U('NotEnough'), 3000)
         end
     else
-        TriggerClientEvent("vorp:TipRight", _source, _U('NotJob')..job, 3000)
+        TriggerClientEvent("vorp:TipRight", _source, _U('NotJob'), 3000)
     end
 end)

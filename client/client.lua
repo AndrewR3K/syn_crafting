@@ -13,85 +13,16 @@ local initialized = false
 local uiopen = false
 local keyopen = false
 local craftingx = Config.crafting
+local campJob = Config.CampfireJobLock
+
+local job
 
 -- Props
 local mainprop
 local subprop
 
 -- TODO: Anstract animations to its own helper folder/file
-local Anims = {
-    ["craft"] = {
-        dict = "mech_inventory@crafting@fallbacks",
-        name = "full_craft_and_stow", 
-        flag = 27,
-        type = 'standard'
-    },
-    ["spindlecook"] = {
-        dict = "amb_camp@world_camp_fire_cooking@male_d@wip_base",
-        name = "wip_base",
-        flag = 17,
-        type = 'standard',
-        prop = {
-            model = 'p_stick04x',
-            coords = {
-                x = 0.2, 
-                y = 0.04,
-                z = 0.12,
-                xr = 170.0,
-                yr = 50.0,
-                zr = 0.0
-            },
-            bone = 'SKEL_R_Finger13',
-            subprop = {
-                model = 's_meatbit_chunck_medium01x',
-                coords = {
-                    x = -0.30, 
-                    y = -0.08,
-                    z = -0.30,
-                    xr = 0.0,
-                    yr = 0.0,
-                    zr = 70.0
-                }
-            }
-        }
-    },
-    ["knifecooking"] = {
-        dict = "amb_camp@world_player_fire_cook_knife@male_a@wip_base",
-        name = "wip_base", 
-        flag = 17,
-        type = 'standard',
-        prop = {
-            model = 'w_melee_knife06',
-            coords = {
-                x = -0.01, 
-                y = -0.02,
-                z = 0.02,
-                xr = 190.0,
-                yr = 0.0,
-                zr = 0.0
-            },
-            bone = 'SKEL_R_Finger13',
-            subprop = {
-                model = 'p_redefleshymeat01xa',
-                coords = {
-                    x = 0.00, 
-                    y = 0.02,
-                    z = -0.20,
-                    xr = 0.0,
-                    yr = 0.0,
-                    zr = 0.0
-                }
-            }
-        }
-    },
-    ["campfire"] = {
-        dict = "script_campfire@lighting_fire@male_male",
-        name = "light_fire_b_p2_male_b", 
-        flag = 17,
-        type = 'standard'
-	}
-}
-
+local Anims = Config.Animations
 keys = Config.keys
 
 function playAnimation(ped, anim)
@@ -171,7 +102,7 @@ function disableAllPrompts()
     Citizen.InvokeNative(0xF1622CE88A1946FB) 
 end
 
-function openUI()
+function openUI(location)
     local allText = _all()
 
     if allText then
@@ -187,7 +118,9 @@ function openUI()
             categories = Config.categories,
             crafttime = Config.CraftTime,
             style = Config.styles,
-            language = allText
+            language = allText,
+            location = location,
+            job = job
         })
         SetNuiFocus(true, true)
     end
@@ -205,7 +138,7 @@ Citizen.CreateThread(function()
     PromptSetGroup(CraftPrompt, promptGroup)
     Citizen.InvokeNative(0xC5F428EE08FA7F2C, CraftPrompt, true)
     PromptRegisterEnd(CraftPrompt)
-    
+    TriggerServerEvent('syn:findjob')
     while true do
         Citizen.Wait(1)
 
@@ -215,36 +148,65 @@ Citizen.CreateThread(function()
         for k, v in pairs(Config.craftingProps) do
             local campfire = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.5, GetHashKey(v), 0) -- prop required to interact
             if campfire ~= false and iscrafting == false and uiopen == false  then
-                        
-                local label = CreateVarString(10, 'LITERAL_STRING', 'Campfire')
-                PromptSetActiveGroupThisFrame(promptGroup, label)
+                local jobcheck = false
+                if campJob == 0 then 
+                    jobcheck = true
+                end
+            
+                if campJob ~=0 then
+                    for k,v in pairs(campJob) do  
+                        if v == job then 
+                            jobcheck = true 
+                        end
+                    end
+                end
 
-                if Citizen.InvokeNative(0xC92AC953F0A982AE, CraftPrompt) then
-                    TriggerServerEvent('syn:findjob')
-                    Wait(500)
-                    if keyopen == false then
-                        propinfo = v
-                        loctitle = 0
-                        openUI()
+                if jobcheck then
+                    local label = CreateVarString(10, 'LITERAL_STRING', 'Campfire')
+                    PromptSetActiveGroupThisFrame(promptGroup, label)
+
+                    if Citizen.InvokeNative(0xC92AC953F0A982AE, CraftPrompt) then
+                        TriggerServerEvent('syn:findjob')
+                        Wait(500)
+                        if keyopen == false then
+                            propinfo = v
+                            loctitle = 0
+                            openUI({id = 'campfires'})
+                        end
                     end
                 end
             end
         end
 
         -- Check for craftable location starters
-        for k, loc in pairs(Config.locations) do
+        for k, loc in pairs(Config.Locations) do
             local dist = GetDistanceBetweenCoords(loc.x, loc.y, loc.z, Coords.x, Coords.y, Coords.z, 0)
             if 2.5 > dist and uiopen == false then
-                local label = CreateVarString(10, 'LITERAL_STRING', loc.name)
-                PromptSetActiveGroupThisFrame(promptGroup, label)
-
-                if Citizen.InvokeNative(0xC92AC953F0A982AE, CraftPrompt) then
-                    TriggerServerEvent('syn:findjob')
-                    Wait(500)
-                    if keyopen == false then
-                        loctitle = k
-                        openUI()
+                local jobcheck = false
+                if loc.Job == 0 then 
+                    jobcheck = true
+                end
+            
+                if loc.Job ~=0 then
+                    for k,v in pairs(loc.Job) do  
+                        if v == job then 
+                            jobcheck = true 
+                        end
                     end
+                end
+
+                if jobcheck then
+                    local label = CreateVarString(10, 'LITERAL_STRING', loc.name)
+                    PromptSetActiveGroupThisFrame(promptGroup, label)
+
+                    if Citizen.InvokeNative(0xC92AC953F0A982AE, CraftPrompt) then
+                        TriggerServerEvent('syn:findjob')
+                        Wait(500)
+                        if keyopen == false then
+                            loctitle = k
+                            openUI(loc)
+                        end
+                    end 
                 end
             end
         end
@@ -273,12 +235,17 @@ RegisterNUICallback('bcc-craftevent', function(args, cb)
 
     local count = tonumber(args.quantity)
     if count ~= nil and count ~= 'close' and count ~= '' and count ~= 0 then
-        TriggerServerEvent('syn:craftingalg', args.craftable, count)
+        TriggerServerEvent('syn:craftingalg', args.craftable, count, args.location)
         cb('ok')
     else
         TriggerEvent("vorp:TipBottom", _U('InvalidAmount'), 4000)
         cb('invalid')
     end
+end)
+
+RegisterNetEvent("syn:setjob")
+AddEventHandler("syn:setjob", function(rjob)
+    job = rjob
 end)
 
 RegisterNetEvent("syn:crafting")
@@ -351,6 +318,12 @@ RegisterCommand("testanimation", function(source, args, rawCommand)
 
     endAnimation(args[1])
     -- endAnimations()
+end, false)
+
+RegisterCommand("coords", function(source, args, rawCommand)
+    local x, y, z = table.unpack(GetEntityCoords(PlayerPedId()))	
+    
+    print(x, y, z)
 end, false)
 
 if Config.commands.extinguish == true then

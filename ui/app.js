@@ -9,7 +9,9 @@ createApp({
       style: {
         fontSize: 'm'
       },
+      job: null,
       language: {},
+      location: {},
       categories: [],
       consumables: {},
       currentRoute: 'home',
@@ -154,7 +156,8 @@ createApp({
         method: 'POST',
         body: JSON.stringify({
           craftable: this.activeCraftable,
-          quantity: this.quantity
+          quantity: this.quantity,
+          location: this.location
         })
       }).then(resp => resp.json()).then(resp => {
         this.showInput = false
@@ -208,27 +211,92 @@ createApp({
       let crafttime = data.crafttime
       let style = data.style
       let language = data.language
-
-
+      let location = data.location
+      let job = data.job
 
       let consumables = {}
-
+      let filteredcat = []
       // Setup object with keys
       categories.forEach(cata => {
         consumables[cata.ident] = []
+        let jobcheck = false
+        // Job is set to specific jobs
+        if (cata.Job !== 0) {
+
+          let ln = cata.Job.length
+          let ps = 0
+          for (ps; ps < ln; ps++) {
+            let currentjob = cata.Job[ps]
+            if (currentjob == job) {
+              jobcheck = true
+              break
+            }
+          }
+        } else {
+          jobcheck = true
+        }
+
+        if (jobcheck == true) {
+          if (cata.Location == 0) {
+            filteredcat.push(cata)
+          } else {
+            let l = cata.Location.length
+            let pos = 0
+            for (pos; pos < l; pos++) {
+              let loc = cata.Location[pos]
+              if (loc == location?.id) {
+                filteredcat.push(cata)
+                break
+              }
+            }
+          }
+        }
       });
 
+
+
       // Fill object created above
-      craftables.forEach(element => {
-        consumables[element.Category].push(element)
+      craftables.forEach(item => {
+        let jobcheck = false
+        if (item.Job !== 0) {
+          let ln = item.Job.length
+          let ps = 0
+          for (ps; ps < ln; ps++) {
+            let currentjob = item.Job[ps]
+            if (currentjob == job) {
+              jobcheck = true
+              break
+            }
+          }
+        } else {
+          jobcheck = true
+        }
+
+        if (jobcheck == true) {
+          // Filter out locations
+          if (item.Location == 0) {
+            consumables[item.Category].push(item)
+          } else {
+            let l = item.Location.length
+            let pos = 0
+            for (pos; pos < l; pos++) {
+              let loc = item.Location[pos]
+              if (loc == location?.id) {
+                consumables[item.Category].push(item)
+                break
+              }
+            }
+          } 
+        }
       });
 
 
       this.language = language
       this.consumables = consumables
-      this.categories = categories
+      this.categories = filteredcat
       this.crafttime = crafttime
       this.style = style
+      this.location = location
     }
   },
 }).mount("#app");
