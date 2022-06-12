@@ -17,8 +17,8 @@ Join the [VORP Community Discord](https://discord.gg/23MPbQ6)
 9. Open Inventory when in crafting window (Press I) **THIS REQUIRES LATEST VERSION OF VORP_CORE-LUA**
 10. Quick Close Crafting (Press esc)
 11. Implements UIPrompt
-12. Job Restrictions for locations, campfires, and indivifual items.
-13. Location Restrictions for indivifual items.
+12. Job Restrictions for locations, campfires, and individual items.
+13. Location Restrictions for individual items.
 
 ## Screenshots
 ![image](https://user-images.githubusercontent.com/10902965/172357337-a6e0be47-82df-4ccd-b851-0f9fab3054cf.png)
