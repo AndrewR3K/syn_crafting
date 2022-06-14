@@ -1,4 +1,5 @@
-# Syn - Crafting (BCC Revamp)
+# (THIS CODEBASE HAS BEEN DEPRECATED!! ANY AND ALL FUTURE DEVELOPMENT WILL BE CONTINUED ON [VORPCORE/vorp_crafting](https://github.com/VORPCORE/vorp_crafting)
+## Syn - Crafting (BCC Revamp)
 
 > A RedM crafting system for [Vorp Core](http://docs.vorpcore.com:3000/)
 
